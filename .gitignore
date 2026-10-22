@@ -9,3 +9,4 @@ assets-src/
 test-results/
 playwright-report/
 .lighthouse/
+.wrangler/
