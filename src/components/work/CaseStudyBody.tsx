@@ -85,7 +85,7 @@ export function CaseStudyBody({ project: p }: { project: Project }) {
 
 function Block({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mt-12 grid gap-4 border-t border-line pt-8 lg:mt-16 lg:grid-12">
+    <div data-reveal className="mt-12 grid gap-4 border-t border-line pt-8 lg:mt-16 lg:grid-12">
       <h2 className="label pt-1 text-muted lg:col-span-3">{title}</h2>
       <div className="lg:col-start-4 lg:col-end-11">{children}</div>
     </div>

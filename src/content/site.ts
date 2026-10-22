@@ -49,25 +49,26 @@ export const site = {
   },
 
   hero: {
-    metaLeft: "Web development · Automation",
-    metaRight: "Based in India · Working remotely",
-    // The headline is split into lines; on wide screens each line sets on its own row.
-    // Alternatives (brief 1.1), swap in if you prefer:
-    // headlineLines: ["I build the website,", "and the system behind it."],
-    // headlineLines: ["Your website, and everything that happens", "after someone fills the form."],
-    headlineLines: ["Websites that bring in enquiries.", "Automations that answer them."],
-    supporting:
-      "I'm Aarya, a developer who designs and builds fast, mobile-first websites for businesses, then sets up the automations behind them: instant replies, lead tracking, team alerts and follow-ups.",
+    // Headline: "Websites that bring in" / [cycling orange word] / "Automations that answer them."
+    // Screen readers get `headline`; the cycling words are visual only.
+    headline: "Websites that bring in enquiries. Automations that answer them.",
+    headlineBefore: "Websites that bring in",
+    headlineWords: ["enquiries.", "customers.", "bookings.", "leads."],
+    headlineAfter: "Automations that answer them.",
+    // Alternatives (brief 1.1), if you prefer a static headline:
+    // "I build the website, and the system behind it."
+    // "Your website, and everything that happens after someone fills the form."
+    supporting: "Fast websites for businesses, and the automations that answer every enquiry.",
     primaryCta: { label: "Start a project", href: "/#contact" },
     secondaryCta: { label: "See the work", href: "/#work" },
-    whatsappLink: "or message on WhatsApp",
+    // spinning badge on the portrait (repeats around the circle)
+    badge: "Web development · Automation · ",
     nameLines: ["Aarya", "Sutar"],
     portraitAlt: "Aarya Sutar",
   },
 
   services: {
     title: "What I build",
-    proofLabel: "Proof:",
     items: [
       {
         number: "01",
@@ -82,10 +83,6 @@ export const site = {
           "You own the code and the domain",
         ],
         cta: { label: "Discuss a website", service: "website" },
-        proof: [
-          { label: "Forgeworks", href: "/work/forgeworks/" },
-          { label: "Windward House", href: "/work/windward-house/" },
-        ],
       },
       {
         number: "02",
@@ -99,7 +96,6 @@ export const site = {
           "Built with n8n and APIs",
         ],
         cta: { label: "Discuss an automation", service: "automation" },
-        proof: [{ label: "Enquiry Autopilot prototype", href: "/work/enquiry-autopilot/" }],
       },
       {
         number: "03",
@@ -107,10 +103,19 @@ export const site = {
         body: "The website's enquiry form feeds the automation directly: one setup, end to end.",
         includes: ["Everything above, connected", "One person accountable for the whole flow"],
         cta: { label: "Discuss both", service: "both" },
-        proof: [{ label: "How it works", href: "/#how-it-works" }],
       },
     ],
   },
+
+  // orange band between Services and Work (decorative, repeats)
+  marquee: [
+    "Websites",
+    "Automations",
+    "Landing pages",
+    "Instant replies",
+    "Lead tracking",
+    "Follow-ups",
+  ],
 
   work: {
     title: "Selected work",
@@ -337,7 +342,6 @@ export const site = {
       { label: "GitHub", href: GITHUB_URL, external: true },
     ],
     resumeLabel: "Résumé",
-    colophon: "Designed and built by me. Next.js, hosted on Cloudflare.",
   },
 
   caseStudy: {

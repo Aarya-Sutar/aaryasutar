@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { site } from "@/content/site";
 import { Section } from "@/components/layout/Section";
 import { RevealTitle } from "@/components/ui/RevealTitle";
@@ -13,13 +14,15 @@ export function Services() {
           {services.items.map((s, i) => (
             <li
               key={s.number}
+              data-reveal
+              style={{ "--d": i } as CSSProperties}
               className={
-                "flex flex-col py-8 lg:px-8 lg:py-10 " +
+                "service-card relative flex flex-col py-8 lg:px-8 lg:py-10 " +
                 (i > 0 ? "border-t border-line lg:border-t-0 lg:border-l " : "lg:pl-0 ") +
                 (i === services.items.length - 1 ? "lg:pr-0" : "")
               }
             >
-              <span className="numeral text-muted" aria-hidden="true">
+              <span className="numeral numeral-stroke" aria-hidden="true">
                 {s.number}
               </span>
               <h3 className="type-h3 mt-6">{s.title}</h3>
@@ -34,26 +37,15 @@ export function Services() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto pt-8">
-                <p>
-                  <TextLink
-                    href={`/?service=${s.cta.service}#contact`}
-                    arrow="next"
-                    className="tap font-semibold"
-                  >
-                    {s.cta.label}
-                  </TextLink>
-                </p>
-                <p className="type-small mt-3 text-muted">
-                  {services.proofLabel}{" "}
-                  {s.proof.map((p, j) => (
-                    <span key={p.href}>
-                      {j > 0 && ", "}
-                      <TextLink href={p.href}>{p.label}</TextLink>
-                    </span>
-                  ))}
-                </p>
-              </div>
+              <p className="mt-auto pt-8">
+                <TextLink
+                  href={`/?service=${s.cta.service}#contact`}
+                  arrow="next"
+                  className="tap font-semibold"
+                >
+                  {s.cta.label}
+                </TextLink>
+              </p>
             </li>
           ))}
         </ol>

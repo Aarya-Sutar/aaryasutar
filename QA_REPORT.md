@@ -8,7 +8,7 @@ Re-run on 23 Oct after the font and hero changes.
 
 | Page | Performance | Accessibility | Best Practices | SEO | LCP | CLS | Page weight |
 |---|---|---|---|---|---|---|---|
-| `/` (4 runs) | 93–97 | 100 | 100 | 100 | 2.4–3.0 s | 0 | 340 KiB |
+| `/` (animated hero + section motion, 23 Oct) | 94–96 | 100 | 100 | 100 | 1.9–3.1 s | 0 | 341 KiB |
 | `/work/forgeworks/` | 97 | 100 | 100 | 100 | 2.7 s | 0 | 360 KiB |
 | `/work/windward-house/` | 95 | 100 | 100 | 100 | 2.9 s | 0 | 392 KiB |
 | `/work/enquiry-autopilot/` | 96 | 100 | 100 | 100 | 2.7 s | 0 | 318 KiB |

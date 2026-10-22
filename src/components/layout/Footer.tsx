@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer data-tone="dark" className="tone-dark border-t border-line">
       <div className="container-x py-10">
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:items-start">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-3 lg:items-center">
           <p className="type-small">{site.footer.copyright(year)}</p>
           <nav aria-label="Footer">
             <ul role="list" className="flex flex-wrap gap-x-5 lg:justify-center">
@@ -45,7 +45,9 @@ export function Footer() {
             )}
           </ul>
         </div>
-        <p className="type-small mt-8 text-muted">{site.footer.colophon}</p>
+        <div data-reveal className="footer-mark-wrap mt-12" aria-hidden="true">
+          <p className="footer-mark">{site.name}</p>
+        </div>
       </div>
     </footer>
   );

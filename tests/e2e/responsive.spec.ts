@@ -60,3 +60,25 @@ test("the portrait never covers the desktop name (name is layered above it)", as
   ]);
   expect(Number(z[0])).toBeGreaterThan(Number(z[1]));
 });
+
+test("every section title fits inside its column at every width", async ({ page }) => {
+  for (const width of [320, 375, 768, 1024, 1280, 1366, 1440, 1536, 1920]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const path of ["/", "/work/forgeworks/", "/work/enquiry-autopilot/"]) {
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+      const overflowing = await page.locator(".display-l").evaluateAll((els) =>
+        els
+          .map((el) => {
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            const text = range.getBoundingClientRect();
+            const box = el.parentElement!.getBoundingClientRect();
+            return { title: el.textContent, over: Math.round(text.right - box.right) };
+          })
+          .filter((r) => r.over > 1),
+      );
+      expect(overflowing, `${path} at ${width}px`).toEqual([]);
+    }
+  }
+});

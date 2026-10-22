@@ -1,5 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { Services } from "@/components/home/Services";
+import { Marquee } from "@/components/home/Marquee";
 import { WorkList } from "@/components/home/WorkList";
 import { EnquiryFlow } from "@/components/home/EnquiryFlow";
 import { Process } from "@/components/home/Process";
@@ -12,6 +13,7 @@ export default function HomePage() {
     <>
       <Hero />
       <Services />
+      <Marquee />
       <WorkList />
       <EnquiryFlow />
       <Process />

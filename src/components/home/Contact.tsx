@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { site } from "@/content/site";
 import { Section } from "@/components/layout/Section";
 import { RevealTitle } from "@/components/ui/RevealTitle";
@@ -12,11 +13,11 @@ export function Contact() {
         <div className="lg:col-span-5">
           <RevealTitle id="contact-title">{c.title}</RevealTitle>
           <p className="body-l mt-6 max-w-[40ch] text-muted">{c.intro}</p>
-          <dl className="mt-10 border-t border-line">
+          <dl data-reveal className="mt-10 border-t border-line">
             {c.list.map((item) => (
               <div
                 key={item.label}
-                className="grid min-h-14 grid-cols-[6.5rem_1fr] items-center gap-4 border-b border-line"
+                className="contact-row grid min-h-14 grid-cols-[6.5rem_1fr] items-center gap-4 border-b border-line"
               >
                 <dt className="label text-muted">{item.label}</dt>
                 <dd>
@@ -33,7 +34,11 @@ export function Contact() {
             ))}
           </dl>
         </div>
-        <div className="lg:col-start-7 lg:col-end-13">
+        <div
+          data-reveal
+          style={{ "--d": 1 } as CSSProperties}
+          className="lg:col-start-7 lg:col-end-13"
+        >
           <EnquiryForm />
         </div>
       </div>

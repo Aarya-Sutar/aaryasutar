@@ -153,7 +153,8 @@
 }
 @utility display-l {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 8vw, 7rem);
+  /* height-aware too, so short wide screens (e.g. 125% Windows scaling) don't get oversized titles */
+  font-size: clamp(2.75rem, min(8vw, 15svh), 7rem);
   line-height: 0.88;
   text-wrap: balance;
   text-transform: uppercase;
@@ -171,7 +172,7 @@
   font-family: var(--font-sans);
   font-weight: 800;
   font-variation-settings: "wdth" 75;
-  font-size: clamp(2.125rem, 3.7vw, 3.75rem);
+  font-size: clamp(2.125rem, min(3.7vw, 7svh), 3.75rem);
   line-height: 0.98;
   letter-spacing: -0.008em;
 }
@@ -424,8 +425,9 @@
     background: var(--ink-950);
   }
 
-  /* ───────────── Hero (brief 6.1) ───────────── */
+  /* ───────────── Hero ───────────── */
   .hero {
+    --band-pad: clamp(1rem, 4svh, 3rem);
     position: relative;
     overflow: hidden;
     padding-top: var(--nav-h);
@@ -433,25 +435,71 @@
   .hero-inner {
     position: relative;
   }
+  .hero-band {
+    padding-top: 2.5rem;
+  }
   .hero-copy {
     position: relative;
     z-index: 3;
   }
+
+  /* Cycling headline word: its own line, in signal orange, sliding through a 1-line mask. */
+  .rotator {
+    display: block;
+    height: 1.12em;
+    margin-block: -0.07em;
+    overflow: hidden;
+    color: var(--signal);
+  }
+  .rotator-track {
+    display: block;
+    animation: rotate-words 10s var(--ease) 1.2s infinite;
+  }
+  .rotator-track > span {
+    display: block;
+    height: 1.12em;
+    line-height: 1.12em;
+  }
+  @keyframes rotate-words {
+    0%,
+    21% {
+      transform: translateY(0);
+    }
+    25%,
+    46% {
+      transform: translateY(-20%);
+    }
+    50%,
+    71% {
+      transform: translateY(-40%);
+    }
+    75%,
+    96% {
+      transform: translateY(-60%);
+    }
+    100% {
+      transform: translateY(-80%);
+    }
+  }
+
   /* Mobile + tablet: each name line fills the container width (fit rule, verified at 320px).
-   --fit is the line's advance width in em, measured from Anton (AARYA 2.355em, SUTAR 2.280em)
-   minus letter-spacing, plus a hair of safety. Container units avoid scrollbar overflow. */
+     --fit is the line's advance width in em, measured from Anton with letters set individually.
+     Container units avoid scrollbar overflow. */
   .hero-name {
     container-type: inline-size;
     position: relative;
     z-index: 2;
+    margin-top: 3rem;
   }
   .hero-name-line {
     display: block;
     white-space: nowrap;
     font-size: calc(100cqw / var(--fit));
   }
-  /* Anton's caps (~0.86em) are taller than the 0.82 line box, so stacked lines would
-     collide; a hairline gap keeps them apart (see DEVIATIONS.md). */
+  .hero-letter {
+    display: inline-block;
+  }
+  /* Anton's caps (~0.86em) are taller than the 0.82 line box, so stacked lines would collide. */
   @media (max-width: 1023.98px) {
     .hero-name-line + .hero-name-line {
       margin-top: calc(0.09em - 0.07em); /* replaces the mask's -0.07em: net +0.09em */
@@ -464,14 +512,104 @@
     max-width: 520px;
     margin: 2rem auto 0;
   }
+  .hero-portrait .hero-depth {
+    position: relative;
+  }
   .hero-portrait img {
     display: block;
     width: 100%;
     height: auto;
   }
+
+  /* Spinning badge: mono text on a circle around a square signal core. */
+  .hero-badge {
+    position: absolute;
+    top: 3%;
+    right: -2%;
+    width: clamp(96px, 9vw, 140px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    translate: calc(var(--mx, 0) * -10px) calc(var(--my, 0) * -8px);
+    transition: translate 900ms var(--ease);
+  }
+  .hero-badge-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    animation: spin 24s linear infinite;
+  }
+  .hero-badge-ring text {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    fill: var(--paper-50);
+  }
+  .hero-badge-core {
+    width: 36%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    background: var(--signal);
+    color: var(--ink-950);
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1875rem; /* body-l */
+    line-height: 1.55;
+  }
+  .hero-ctas {
+    margin-top: 2rem;
+  }
+  /* Short desktop screens (laptops, 125% display scaling): tighter copy and spacing so the
+     hero breathes instead of the name crowding the buttons. */
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .hero {
+      --band-pad: clamp(0.75rem, 3svh, 1.75rem);
+    }
+    .hero .hero-sub {
+      margin-top: 1rem;
+      font-size: 1.0625rem;
+      line-height: 1.5;
+    }
+    .hero .hero-ctas {
+      margin-top: 1.5rem;
+    }
+  }
+
+  /* Pointer depth (JS writes --mx/--my): portrait and name drift against each other. */
+  .hero-depth {
+    transition: transform 900ms var(--ease);
+  }
+  .hero-portrait .hero-depth {
+    transform: translate3d(calc(var(--mx, 0) * -18px), calc(var(--my, 0) * -10px), 0);
+  }
+  .hero-name.hero-depth {
+    transform: translate3d(calc(var(--mx, 0) * 10px), 0, 0);
+  }
+
   @media (min-width: 1024px) {
     .hero {
-      min-height: min(100svh, 960px);
+      --hero-h: min(100svh, 960px);
+      /* portrait: fills the band, but never wider than half the container */
+      --portrait-h: min(
+        calc(var(--hero-h) - var(--nav-h) - var(--band-pad)),
+        calc((min(100vw, 1440px) - 2 * var(--gutter)) * 0.5)
+      );
+      /* when the portrait is capped its top drops; shift the copy by half that gap */
+      --band-top: calc(
+        max(0px, var(--hero-h) - var(--nav-h) - var(--portrait-h) - var(--band-pad)) * 0.5 +
+          var(--band-pad)
+      );
+      min-height: var(--hero-h);
     }
     .hero-inner {
       display: flex;
@@ -479,8 +617,19 @@
       min-height: calc(min(100svh, 960px) - var(--nav-h));
       padding-bottom: clamp(12px, 1.4vw, 24px);
     }
+    /* The band between nav and name: copy is centred in it, and the portrait's top edge
+       starts at the band's top, so text and photo sit on the same level. */
+    .hero-band {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding-block: var(--band-top) var(--band-pad);
+    }
+    .hero-copy {
+      width: calc((100% - 11 * var(--grid-gap)) * 7 / 12 + 6 * var(--grid-gap));
+    }
     .hero-name {
-      margin-top: auto;
+      margin-top: 0;
       container-type: normal;
       display: flex;
       white-space: nowrap;
@@ -490,17 +639,17 @@
       display: inline-block;
       font-size: clamp(6rem, calc((100svh - 490px) / 0.82), var(--display-xl));
     }
-    /* Right half, bottom-anchored, ~78% of the hero. The name is layered above the portrait:
-     see DEVIATIONS.md (the black shirt would otherwise hide SUTAR entirely). */
+    /* Right side, bottom-anchored, top aligned with the band. The name is layered above it. */
     .hero-portrait {
       position: absolute;
       bottom: 0;
+      height: var(--portrait-h);
       right: max(var(--gutter), calc((100% - 1440px) / 2 + var(--gutter)));
-      height: 78%;
       width: auto;
       max-width: none;
       margin: 0;
     }
+    .hero-portrait .hero-depth,
     .hero-portrait picture {
       height: 100%;
     }
@@ -508,13 +657,19 @@
       height: 100%;
       width: auto;
     }
+    .hero-badge {
+      top: 10%;
+      right: -4%;
+    }
   }
 
   /* Masked rise (hero name + section titles).
    Anton's caps overshoot a 0.82 line box slightly, so the mask gets em-based breathing room. */
   .mask {
     display: block;
+    /* the rise only needs a vertical mask; never clip letters sideways */
     overflow: hidden;
+    overflow: visible clip;
     padding-block: 0.07em 0.03em;
     margin-block: -0.07em -0.03em;
   }
@@ -551,10 +706,11 @@
     }
   }
 
-  /* Hero reveal: CSS-only, runs on load, so content never waits for JS. */
-  .hero-name .mask-inner {
-    animation: rise 750ms var(--ease) both;
-    animation-delay: calc(var(--i, 0) * 90ms);
+  /* Hero reveal: CSS-only, runs on load, so content never waits for JS.
+     Each letter of the name rises from its mask in turn. */
+  .hero-letter {
+    animation: rise 850ms var(--ease) both;
+    animation-delay: calc(var(--l, 0) * 45ms + 80ms);
   }
   .hero-portrait-img {
     transform-origin: 50% 100%;
@@ -808,6 +964,42 @@
     animation: state-in 200ms ease-out both;
   }
 
+  /* Scroll: the name splits apart and the portrait sinks back as you leave the hero.
+     Scroll-driven animations where supported; elsewhere the hero simply scrolls. */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-name-line {
+        animation: split-left linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 90vh;
+      }
+      .hero-name-line + .hero-name-line {
+        animation-name: split-right;
+      }
+      .hero-portrait {
+        animation: portrait-sink linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 90vh;
+      }
+    }
+  }
+  @keyframes split-left {
+    to {
+      transform: translateX(-16%);
+    }
+  }
+  @keyframes split-right {
+    to {
+      transform: translateX(16%);
+    }
+  }
+  @keyframes portrait-sink {
+    to {
+      transform: translateY(8%) scale(0.92);
+      opacity: 0.5;
+    }
+  }
+
   /* ───────────── Reduced motion: everything instant ───────────── */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -816,6 +1008,9 @@
       scroll-behavior: auto !important;
     }
     .hero-name .mask-inner,
+    .hero-letter,
+    .rotator-track,
+    .hero-badge-ring,
     .hero-portrait-img,
     .reveal-title .mask-inner {
       animation: none !important;
@@ -826,6 +1021,8 @@
       animation: state-in 150ms ease-out both;
     }
     .site-nav,
+    .hero-depth,
+    .hero-badge,
     .faq-icon,
     .btn-arrow,
     .link-arrow,
@@ -849,5 +1046,242 @@
     .faq-item[open] .faq-body {
       animation: none;
     }
+  }
+}
+
+/* ───────────── Below-the-hero motion and hover ─────────────
+   Unlayered on purpose: hover colours here need to beat Tailwind colour utilities. */
+
+/* Scroll reveals (ScrollReveal.tsx arms off-screen [data-reveal] elements after hydration) */
+[data-reveal].is-armed {
+  opacity: 0;
+  transform: translateY(28px);
+}
+[data-reveal].is-in {
+  animation: reveal-up 800ms var(--ease) both;
+  animation-delay: calc(var(--d, 0) * 90ms);
+}
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Outlined Anton numerals that fill with the accent on hover */
+.numeral-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--muted);
+  transition:
+    color 400ms var(--ease),
+    -webkit-text-stroke-color 400ms var(--ease),
+    transform 400ms var(--ease);
+  display: inline-block;
+}
+
+/* Services: an accent bar draws across the top of the column */
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms var(--ease);
+}
+
+/* Process: each step's top rule draws in the accent as it appears */
+.step::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+}
+.step.is-armed::before {
+  transform: scaleX(0);
+}
+.step.is-in::before {
+  animation: draw-x 900ms var(--ease) both;
+  animation-delay: calc(var(--d, 0) * 90ms + 250ms);
+}
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Rows that nudge sideways (about background, contact list) */
+.hover-row > *,
+.contact-row > * {
+  transition: transform 400ms var(--ease);
+}
+.hover-row .label,
+.contact-row dt {
+  transition: color 300ms ease-out;
+}
+
+/* FAQ: open question keeps the accent */
+.faq-item summary > span {
+  transition:
+    transform 400ms var(--ease),
+    color 300ms ease-out;
+}
+.faq-item[open] summary > span,
+.faq-item[open] .faq-icon {
+  color: var(--accent);
+}
+
+/* Enquiry-flow nodes lift */
+.flow-node {
+  transition:
+    transform 400ms var(--ease),
+    border-color 300ms ease-out;
+}
+
+@media (hover: hover) {
+  .service-card:hover::before {
+    transform: scaleX(1);
+  }
+  .service-card:hover .numeral-stroke,
+  .hover-card:hover .numeral-stroke,
+  .project-row:hover .numeral-stroke {
+    color: var(--accent);
+    -webkit-text-stroke-color: var(--accent);
+    transform: translateY(-4px);
+  }
+  .hover-row:hover > *,
+  .contact-row:hover > * {
+    transform: translateX(6px);
+  }
+  .hover-row:hover .label,
+  .contact-row:hover dt {
+    color: var(--accent);
+  }
+  .faq-item summary:hover > span {
+    transform: translateX(6px);
+    color: var(--accent);
+  }
+  .faq-item summary:hover .faq-icon {
+    color: var(--accent);
+  }
+  .flow-node:hover {
+    transform: translateY(-4px);
+    border-color: var(--signal);
+  }
+}
+
+/* Orange marquee band between Services and Work */
+.marquee-wrap {
+  overflow: clip;
+  background: var(--paper-50);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+.marquee-band {
+  width: 110%;
+  margin-left: -5%;
+  background: var(--signal);
+  color: var(--ink-950);
+  transform: rotate(-2deg);
+  padding-block: clamp(0.75rem, 1.6vw, 1.25rem);
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 36s linear infinite;
+}
+.marquee-band:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-run {
+  display: flex;
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  padding-right: clamp(1rem, 2.4vw, 2rem);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4.25rem);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.marquee-sep {
+  display: inline-block;
+  width: 0.26em;
+  height: 0.26em;
+  background: var(--ink-950);
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Footer: full-width outlined name that fills on hover */
+.footer-mark-wrap {
+  container-type: inline-size;
+}
+.footer-mark {
+  font-family: var(--font-display);
+  font-size: calc(100cqw / 4.9);
+  line-height: 0.82;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--ink-700);
+  transition:
+    color 600ms var(--ease),
+    -webkit-text-stroke-color 600ms var(--ease);
+}
+/* Hover is driven by the wrapper's real layout box. The text itself ignores the pointer:
+   Anton's text box is ~1.5em tall, far taller than the 0.82 line height, and would otherwise
+   reach up over the footer links. */
+.footer-mark {
+  pointer-events: none;
+}
+.footer-mark-wrap:hover .footer-mark {
+  color: var(--signal);
+  -webkit-text-stroke-color: var(--signal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal].is-in,
+  .step.is-in::before,
+  .marquee-track {
+    animation: none !important;
+  }
+  .numeral-stroke,
+  .service-card::before,
+  .hover-row > *,
+  .contact-row > *,
+  .faq-item summary > span,
+  .flow-node {
+    transition: none !important;
+  }
+  .service-card:hover .numeral-stroke,
+  .hover-card:hover .numeral-stroke,
+  .project-row:hover .numeral-stroke,
+  .hover-row:hover > *,
+  .contact-row:hover > *,
+  .faq-item summary:hover > span,
+  .flow-node:hover {
+    transform: none !important;
   }
 }

@@ -6,9 +6,13 @@ test("home renders every section in order @cross", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle("Aarya Sutar: Websites & Automations for Businesses");
   await expect(page.locator("h1")).toHaveCount(1);
-  await expect(page.locator("h1")).toHaveText(
-    "Websites that bring in enquiries. Automations that answer them.",
-  );
+  // the visual headline cycles words; assistive tech gets the full sentence
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Websites that bring in enquiries. Automations that answer them.",
+    }),
+  ).toBeVisible();
   const ids = await page.locator("main > section[id]").evaluateAll((els) => els.map((e) => e.id));
   expect(ids).toEqual([
     "top",

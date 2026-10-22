@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { site } from "@/content/site";
 import { Section } from "@/components/layout/Section";
 import { RevealTitle } from "@/components/ui/RevealTitle";
@@ -15,7 +16,7 @@ export function About() {
       <div className="container-x grid gap-y-14 lg:grid-12">
         <div className="lg:col-span-6">
           <RevealTitle id="about-title">{about.title}</RevealTitle>
-          <div className="body-l mt-8 flex flex-col gap-5 measure">
+          <div data-reveal className="body-l mt-8 flex flex-col gap-5 measure">
             {about.bio.map((para) => (
               <p key={para.slice(0, 24)}>{para}</p>
             ))}
@@ -34,10 +35,12 @@ export function About() {
         <div className="lg:col-start-8 lg:col-end-13">
           <h3 className="label text-muted">{about.backgroundTitle}</h3>
           <ol role="list" className="mt-4 border-t border-line">
-            {about.background.map((b) => (
+            {about.background.map((b, i) => (
               <li
                 key={b.role}
-                className="grid gap-1 border-b border-line py-4 sm:grid-cols-[7.5rem_1fr] sm:gap-4"
+                data-reveal
+                style={{ "--d": i } as CSSProperties}
+                className="hover-row grid gap-1 border-b border-line py-4 sm:grid-cols-[7.5rem_1fr] sm:gap-4"
               >
                 <span className="label pt-1 text-muted">{b.period}</span>
                 <div>

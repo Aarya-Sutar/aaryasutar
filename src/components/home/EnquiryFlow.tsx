@@ -61,22 +61,19 @@ export function EnquiryFlow() {
   return (
     <section
       id="how-it-works"
-      data-tone="light"
-      className="tone-light"
+      data-tone="dark"
+      className="tone-dark section-pad"
       aria-labelledby="flow-title"
     >
       <div className="container-x">
-        <div
-          data-tone="dark"
-          className="tone-dark px-[clamp(16px,4vw,56px)] py-[clamp(3.5rem,8vw,6.5rem)]"
-        >
+        <div>
           <RevealTitle id="flow-title">{flow.title}</RevealTitle>
           <p className="body-l mt-5 max-w-[60ch] text-muted">{flow.intro}</p>
 
           <div
             ref={wrapRef}
             data-state={state}
-            className="flow relative mt-12 overflow-hidden lg:mt-16"
+            className="flow relative mt-12 overflow-x-clip lg:mt-16"
           >
             {/* the travelling square: hidden behind nodes, visible in the gaps */}
             <div

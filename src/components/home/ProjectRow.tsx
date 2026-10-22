@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { site } from "@/content/site";
 import { type Project, projectDomain } from "@/content/projects";
 import { BrowserFrame } from "@/components/ui/BrowserFrame";
@@ -21,6 +22,7 @@ export function ProjectRow({ project: p, index }: ProjectRowProps) {
     >
       {/* Image: columns 1–7 (or 6–12 when flipped) */}
       <div
+        data-reveal
         className={cn(
           "project-shot relative mb-6 min-w-0 lg:mb-0 lg:row-start-1",
           flip ? "lg:col-start-6 lg:col-end-13" : "lg:col-start-1 lg:col-end-8",
@@ -74,12 +76,14 @@ export function ProjectRow({ project: p, index }: ProjectRowProps) {
 
       {/* Text: columns 8–12 (or 1–5 when flipped) */}
       <div
+        data-reveal
+        style={{ "--d": 1 } as CSSProperties}
         className={cn(
           "lg:row-start-1",
           flip ? "lg:col-start-1 lg:col-end-6" : "lg:col-start-8 lg:col-end-13",
         )}
       >
-        <span className="numeral text-muted" aria-hidden="true">
+        <span className="numeral numeral-stroke" aria-hidden="true">
           {number}
         </span>
         <h3 id={titleId} className="title-text mt-4 text-[clamp(2rem,3.4vw,3rem)]">
