@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 import { prefersReducedMotion } from "@/lib/useReducedMotion";
 import { isOnScreen } from "@/lib/useInView";
@@ -13,7 +13,8 @@ type RevealTitleProps = {
 };
 
 /**
- * Section title with a one-line masked rise (brief 5 #3).
+ * Section title with a masked rise (brief 5 #3). Each word rises from its own mask in turn,
+ * so titles that wrap onto two lines still read top to bottom.
  * Server HTML is fully visible; motion is only added after hydration,
  * and only for titles that are still off-screen.
  */
@@ -46,9 +47,14 @@ export function RevealTitle({ children, as: Tag = "h2", id, className }: RevealT
       className={cn("display-l reveal-title", className)}
       data-reveal={state === "idle" ? undefined : state}
     >
-      <span className="mask">
-        <span className="mask-inner">{children}</span>
-      </span>
+      {children.split(" ").map((word, i) => (
+        <Fragment key={i}>
+          {i > 0 && " "}
+          <span className="mask mask-word" style={{ "--w": i } as CSSProperties}>
+            <span className="mask-inner">{word}</span>
+          </span>
+        </Fragment>
+      ))}
     </Tag>
   );
 }

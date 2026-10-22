@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { site } from "@/content/site";
 import { ExternalHint, externalProps } from "@/components/ui/ExternalHint";
 import { resumeExists } from "@/lib/resume";
@@ -46,7 +47,13 @@ export function Footer() {
           </ul>
         </div>
         <div data-reveal className="footer-mark-wrap mt-12" aria-hidden="true">
-          <p className="footer-mark">{site.name}</p>
+          <p className="footer-mark">
+            {[...site.name].map((ch, i) => (
+              <span key={i} style={{ "--i": i } as CSSProperties}>
+                {ch}
+              </span>
+            ))}
+          </p>
         </div>
       </div>
     </footer>

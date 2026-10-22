@@ -22,7 +22,7 @@ export function ProjectRow({ project: p, index }: ProjectRowProps) {
     >
       {/* Image: columns 1–7 (or 6–12 when flipped) */}
       <div
-        data-reveal
+        data-reveal="clip"
         className={cn(
           "project-shot relative mb-6 min-w-0 lg:mb-0 lg:row-start-1",
           flip ? "lg:col-start-6 lg:col-end-13" : "lg:col-start-1 lg:col-end-8",
