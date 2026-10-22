@@ -120,27 +120,32 @@ export function ProjectRow({ project: p, index }: ProjectRowProps) {
             <span className="sr-only">: {p.name}</span>
             <ArrowIcon className="project-arrow" />
           </a>
-          {p.liveUrl && (
-            <TextLink
-              href={p.liveUrl}
-              external
-              arrow="external"
-              className="above-stretch tap type-small"
-            >
-              {site.work.liveLink}
-              <span className="sr-only">: {p.name}</span>
-            </TextLink>
-          )}
-          {p.repoUrl && (
-            <TextLink
-              href={p.repoUrl}
-              external
-              arrow="external"
-              className="above-stretch tap type-small"
-            >
-              {site.work.repoLink}
-              <span className="sr-only">: {p.name}</span>
-            </TextLink>
+          {(p.liveUrl || p.repoUrl) && (
+            // secondary links wrap as a pair, so "Code" never ends up alone on a phone
+            <span className="flex gap-x-6">
+              {p.liveUrl && (
+                <TextLink
+                  href={p.liveUrl}
+                  external
+                  arrow="external"
+                  className="above-stretch tap type-small"
+                >
+                  {site.work.liveLink}
+                  <span className="sr-only">: {p.name}</span>
+                </TextLink>
+              )}
+              {p.repoUrl && (
+                <TextLink
+                  href={p.repoUrl}
+                  external
+                  arrow="external"
+                  className="above-stretch tap type-small"
+                >
+                  {site.work.repoLink}
+                  <span className="sr-only">: {p.name}</span>
+                </TextLink>
+              )}
+            </span>
           )}
         </div>
       </div>

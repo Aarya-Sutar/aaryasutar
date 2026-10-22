@@ -74,7 +74,7 @@ const projects: Project[] = [
     },
     caseStudy: {
       brief:
-        "Most gym websites look interchangeable and bury the one action that matters: booking a first session. Forgeworks explores what a small, coaching-led gym's site looks like when every page points toward a free trial.",
+        "Most gym websites look interchangeable and bury the one action that matters: booking a first session. Forgeworks explores what a small, coaching-led gym’s site looks like when every page points toward a free trial.",
       built: [
         "Home",
         "Programs",
@@ -92,7 +92,7 @@ const projects: Project[] = [
       decisions: [
         {
           title: "A story, not a slogan",
-          body: "The brand is built around the gym's history and coaching standards rather than generic fitness claims.",
+          body: "The brand is built around the gym’s history and coaching standards rather than generic fitness claims.",
         },
         {
           title: "One action everywhere",
@@ -148,7 +148,7 @@ const projects: Project[] = [
         "A 4-step Reserve flow (dates → room → guest details → review) with confirmation",
         "Table (dining)",
         "Grounds",
-        "No payment processing; that's deliberate for a demo.",
+        "No payment processing; that’s deliberate for a demo.",
       ],
       // TODO(Aarya): review these drafts (brief U11).
       decisions: [
@@ -182,9 +182,9 @@ const projects: Project[] = [
       "A working prototype of an automation that logs every new enquiry in a Google Sheet and alerts the business on Telegram within seconds.",
     // TODO(Aarya): confirm these three highlights (taken from what the recording shows).
     highlights: [
-      "Catches each website form submission the moment it's sent",
+      "Catches each website form submission the moment it’s sent",
       "Adds the enquiry to a Google Sheet with a timestamp, source and a “New” status",
-      "Alerts the team on Telegram with the lead's details and a one-tap WhatsApp link",
+      "Alerts the team on Telegram with the lead’s details and a one-tap WhatsApp link",
     ],
     // TODO(Aarya): confirm the tools used (n8n, Telegram and Google Sheets are visible in the recording).
     stack: ["n8n", "Telegram Bot API", "Google Sheets"],
@@ -195,7 +195,7 @@ const projects: Project[] = [
         posterAlt:
           "The n8n workflow editor with four connected steps: Webhook, Edit Fields, Append row in sheet, and Send a text message.",
         captionsNote:
-          "The recording shows an n8n workflow with four steps: Webhook, Edit Fields, Append row in sheet, and Send a text message. A test enquiry is submitted and each step turns green in turn. A new row appears in a Google Sheet called “Leads” with the timestamp, name, phone, course, class, source (“Website Form”) and status (“New”). A “New enquiry” message then arrives in a Telegram group called “Enquiry Alerts”, with the lead's name, phone number, course and an “Open in WhatsApp” link. The recording has no sound.",
+          "The recording shows an n8n workflow with four steps: Webhook, Edit Fields, Append row in sheet, and Send a text message. A test enquiry is submitted and each step turns green in turn. A new row appears in a Google Sheet called “Leads” with the timestamp, name, phone, course, class, source (“Website Form”) and status (“New”). A “New enquiry” message then arrives in a Telegram group called “Enquiry Alerts”, with the lead’s name, phone number, course and an “Open in WhatsApp” link. The recording has no sound.",
       },
     },
     caseStudy: {
@@ -207,11 +207,11 @@ const projects: Project[] = [
         "A webhook receives each website form submission.",
         "An Edit Fields step maps the submitted details (name, phone, course, class) into a consistent shape.",
         "A new row is appended to a “Leads” Google Sheet with a timestamp, the source and a “New” status.",
-        "A Telegram message goes to an “Enquiry Alerts” group with the lead's name, phone, course and an “Open in WhatsApp” link.",
+        "A Telegram message goes to an “Enquiry Alerts” group with the lead’s name, phone, course and an “Open in WhatsApp” link.",
       ],
       // TODO(Aarya): add 2–3 decisions worth noting for this prototype (the brief has none yet).
       decisions: [],
-      note: "This prototype sends its alerts on Telegram. Production versions use WhatsApp once the business's WhatsApp Business account is verified.",
+      note: "This prototype sends its alerts on Telegram. Production versions use WhatsApp once the business’s WhatsApp Business account is verified.",
     },
   },
 ];
