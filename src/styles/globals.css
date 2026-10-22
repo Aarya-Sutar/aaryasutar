@@ -1,0 +1,853 @@
+@import "tailwindcss";
+
+/* ───────────── Tokens (brief 4.1) ───────────── */
+:root {
+  --ink-950: #12100e;
+  --ink-900: #1c1916;
+  --ink-700: #3a342e;
+  --paper-50: #f2ede4;
+  --paper-100: #e7e0d4;
+  --muted-dark: #a39a8e;
+  --muted-light: #5c554c;
+  --signal: #ff5a1f;
+  --signal-hover: #ff7340;
+  --signal-ink: #b8400f;
+  --success: #3f8f5a;
+  --error-light: #c4322b;
+  --error-dark: #ff6b5e;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --nav-h: 64px;
+  --gutter: 16px;
+  --grid-gap: clamp(16px, 2vw, 24px);
+  --section-pad: clamp(4rem, 10vw, 8rem);
+  --display-xl: clamp(4.75rem, 19vw, 16rem);
+}
+@media (min-width: 640px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 40px;
+  }
+}
+@media (min-width: 1440px) {
+  :root {
+    --gutter: 56px;
+  }
+}
+
+@theme inline {
+  --color-ink-950: var(--ink-950);
+  --color-ink-900: var(--ink-900);
+  --color-ink-700: var(--ink-700);
+  --color-paper-50: var(--paper-50);
+  --color-paper-100: var(--paper-100);
+  --color-muted-dark: var(--muted-dark);
+  --color-muted-light: var(--muted-light);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-success: var(--success);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
+  --font-display: var(--font-anton), "Impact", sans-serif;
+  --font-sans: var(--font-text), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --breakpoint-2xl: 90rem;
+  --radius-none: 0;
+}
+
+@layer components {
+  /* ───────────── Tones: dark is the design, not a toggle ───────────── */
+  .tone-dark {
+    background-color: var(--ink-950);
+    color: var(--paper-50);
+    --surface: var(--ink-950);
+    --muted: var(--muted-dark);
+    --line: var(--ink-700);
+    --accent: var(--signal);
+    --focus: var(--signal);
+    --error: var(--error-dark);
+    --btn-bg: var(--signal);
+    --btn-fg: var(--ink-950);
+    --btn-bg-hover: var(--signal-hover);
+  }
+  .tone-light {
+    background-color: var(--paper-50);
+    color: var(--ink-950);
+    --surface: var(--paper-50);
+    --muted: var(--muted-light);
+    /* paper-100 on paper-50 is ~1.1:1 and the structure vanished; a 15% ink rule keeps it visible */
+    --line: color-mix(in srgb, var(--ink-950) 15%, var(--paper-50));
+    --accent: var(--signal-ink);
+    --focus: var(--signal-ink);
+    --error: var(--error-light);
+    --btn-bg: var(--ink-950);
+    --btn-fg: var(--paper-50);
+    --btn-bg-hover: #2a2621;
+  }
+}
+
+@layer base {
+  /* ───────────── Base ───────────── */
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--nav-h);
+  }
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+  body {
+    background: var(--ink-950);
+    color: var(--paper-50);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--signal);
+    color: var(--ink-950);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus, var(--signal));
+    outline-offset: 3px;
+  }
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ───────────── Layout ───────────── */
+@utility container-x {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+@utility grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+@utility section-pad {
+  padding-block: var(--section-pad);
+}
+
+/* ───────────── Type scale (brief 4.2) ───────────── */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-size: var(--display-xl);
+  line-height: 0.82;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+@utility display-l {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 8vw, 7rem);
+  line-height: 0.88;
+  text-wrap: balance;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+@utility type-h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(1.375rem, 2.1vw, 1.875rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+/* hero h1: Bricolage at its narrow, extra-bold cut so each sentence sets as one poster line */
+@utility headline {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-variation-settings: "wdth" 75;
+  font-size: clamp(2.125rem, 3.7vw, 3.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.008em;
+}
+/* project names and other large text headings */
+@utility title-text {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-variation-settings: "wdth" 85;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+/* big Anton numerals for sequences (services, work, process) */
+@utility numeral {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+}
+@utility body-l {
+  font-size: 1.1875rem;
+  line-height: 1.55;
+}
+@utility body {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+@utility type-small {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+@utility label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+@utility measure {
+  max-width: 68ch;
+}
+
+@layer components {
+  /* ───────────── Skip link ───────────── */
+  .skip-link {
+    position: fixed;
+    left: var(--gutter);
+    top: 8px;
+    z-index: 100;
+    padding: 12px 16px;
+    background: var(--signal);
+    color: var(--ink-950);
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus-visible {
+    transform: none;
+    outline-color: var(--paper-50);
+  }
+
+  /* ───────────── Buttons (brief 4.5) ───────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 16px 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    border: 1px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 180ms ease-out;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: inherit;
+    border-color: currentColor;
+  }
+  .btn-sm {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 0.9375rem;
+  }
+  .btn-arrow {
+    display: inline-block;
+    transition: transform 180ms ease-out;
+  }
+  .btn[disabled] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+  @media (hover: hover) {
+    .btn-primary:hover {
+      background: var(--btn-bg-hover);
+    }
+    .btn-secondary:hover {
+      background: color-mix(in srgb, currentColor 6%, transparent);
+    }
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+  }
+  .btn:focus-visible .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ───────────── Text link ───────────── */
+  .link {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color 180ms ease-out;
+  }
+  .link:hover,
+  .link:focus-visible {
+    text-decoration-thickness: 2px;
+    color: var(--accent);
+  }
+  /* standalone text links get a 44px touch target (brief 9.5) */
+  .tap {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .link-arrow {
+    display: inline-block;
+    transition: transform 180ms ease-out;
+  }
+  @media (hover: hover) {
+    .link:hover .link-arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  /* ───────────── Tag ───────────── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid currentColor;
+    padding: 4px 8px;
+  }
+  .tag-concept {
+    border-style: dashed;
+  }
+
+  /* ───────────── Browser frame (brief 4.4) ───────────── */
+  .frame {
+    background: var(--paper-100);
+    box-shadow: 0 1px 0 var(--paper-100);
+    overflow: hidden;
+  }
+  .frame-bar {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-inline: 10px;
+    background: var(--paper-100);
+    color: var(--muted-light);
+  }
+  .frame-dot {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    background: color-mix(in srgb, var(--ink-950) 22%, var(--paper-100));
+  }
+  .frame-domain {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    margin-left: 8px;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .frame-compact .frame-bar {
+    height: 16px;
+    gap: 4px;
+    padding-inline: 6px;
+  }
+  .frame-compact .frame-dot {
+    width: 5px;
+    height: 5px;
+  }
+  .frame-viewport {
+    overflow: hidden;
+    background: var(--ink-900);
+  }
+  .frame-viewport img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  /* ───────────── Navigation ───────────── */
+  .site-nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: var(--nav-h);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    transition: transform 220ms var(--ease);
+  }
+  .site-nav[data-hidden="true"] {
+    transform: translateY(-100%);
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration-line: none;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    color: var(--accent);
+  }
+
+  .menu-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--ink-950);
+    color: var(--paper-50);
+  }
+  .menu-dialog::backdrop {
+    background: var(--ink-950);
+  }
+
+  /* ───────────── Hero (brief 6.1) ───────────── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--nav-h);
+  }
+  .hero-inner {
+    position: relative;
+  }
+  .hero-copy {
+    position: relative;
+    z-index: 3;
+  }
+  /* Mobile + tablet: each name line fills the container width (fit rule, verified at 320px).
+   --fit is the line's advance width in em, measured from Anton (AARYA 2.355em, SUTAR 2.280em)
+   minus letter-spacing, plus a hair of safety. Container units avoid scrollbar overflow. */
+  .hero-name {
+    container-type: inline-size;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-name-line {
+    display: block;
+    white-space: nowrap;
+    font-size: calc(100cqw / var(--fit));
+  }
+  /* Anton's caps (~0.86em) are taller than the 0.82 line box, so stacked lines would
+     collide; a hairline gap keeps them apart (see DEVIATIONS.md). */
+  @media (max-width: 1023.98px) {
+    .hero-name-line + .hero-name-line {
+      margin-top: calc(0.09em - 0.07em); /* replaces the mask's -0.07em: net +0.09em */
+    }
+  }
+  .hero-portrait {
+    position: relative;
+    z-index: 1;
+    width: 82%;
+    max-width: 520px;
+    margin: 2rem auto 0;
+  }
+  .hero-portrait img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  @media (min-width: 1024px) {
+    .hero {
+      min-height: min(100svh, 960px);
+    }
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(min(100svh, 960px) - var(--nav-h));
+      padding-bottom: clamp(12px, 1.4vw, 24px);
+    }
+    .hero-name {
+      margin-top: auto;
+      container-type: normal;
+      display: flex;
+      white-space: nowrap;
+    }
+    /* Height-aware: shrinks on short laptop screens so the whole hero fits the first viewport. */
+    .hero-name .hero-name-line {
+      display: inline-block;
+      font-size: clamp(6rem, calc((100svh - 490px) / 0.82), var(--display-xl));
+    }
+    /* Right half, bottom-anchored, ~78% of the hero. The name is layered above the portrait:
+     see DEVIATIONS.md (the black shirt would otherwise hide SUTAR entirely). */
+    .hero-portrait {
+      position: absolute;
+      bottom: 0;
+      right: max(var(--gutter), calc((100% - 1440px) / 2 + var(--gutter)));
+      height: 78%;
+      width: auto;
+      max-width: none;
+      margin: 0;
+    }
+    .hero-portrait picture {
+      height: 100%;
+    }
+    .hero-portrait img {
+      height: 100%;
+      width: auto;
+    }
+  }
+
+  /* Masked rise (hero name + section titles).
+   Anton's caps overshoot a 0.82 line box slightly, so the mask gets em-based breathing room. */
+  .mask {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.07em 0.03em;
+    margin-block: -0.07em -0.03em;
+  }
+  .mask > .mask-inner {
+    display: block;
+  }
+
+  @keyframes rise {
+    from {
+      transform: translateY(105%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes portrait-in {
+    from {
+      opacity: 0;
+      transform: scale(1.03);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Hero reveal: CSS-only, runs on load, so content never waits for JS. */
+  .hero-name .mask-inner {
+    animation: rise 750ms var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+  .hero-portrait-img {
+    transform-origin: 50% 100%;
+    animation: portrait-in 700ms var(--ease) 150ms both;
+  }
+  .hero-support {
+    animation: fade-up 450ms var(--ease) 450ms both;
+  }
+
+  /* Section title reveal (JS adds data-reveal only when the title is still off-screen) */
+  .reveal-title[data-reveal="armed"] .mask-inner {
+    transform: translateY(105%);
+  }
+  .reveal-title[data-reveal="in"] .mask-inner {
+    animation: rise 600ms var(--ease) both;
+  }
+
+  /* ───────────── Project rows (brief 5 #4) ───────────── */
+  .project-shot img {
+    transition: transform 300ms var(--ease);
+  }
+  .underline-draw {
+    position: relative;
+  }
+  .underline-draw::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms var(--ease);
+  }
+  .project-arrow {
+    display: inline-block;
+    transition: transform 300ms var(--ease);
+  }
+  @media (hover: hover) {
+    .project-row:hover .project-shot img {
+      transform: scale(1.02);
+    }
+    .project-row:hover .underline-draw::after {
+      transform: scaleX(1);
+    }
+    .project-row:hover .project-arrow {
+      transform: translateX(4px);
+    }
+  }
+  .project-row:focus-within .project-shot img {
+    transform: scale(1.02);
+  }
+  .project-row:focus-within .underline-draw::after {
+    transform: scaleX(1);
+  }
+  .project-row:focus-within .project-arrow {
+    transform: translateX(4px);
+  }
+  /* Whole row tappable: the case-study link stretches over the row */
+  .stretched-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .above-stretch {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ───────────── Enquiry flow diagram (brief 5 #2, 6.4) ───────────── */
+  .flow-line-base {
+    stroke: var(--ink-700);
+  }
+  .flow-line-draw {
+    stroke: var(--signal);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  .flow-traveller {
+    opacity: 0;
+  }
+  .flow[data-state="armed"] .flow-node-inner {
+    opacity: 0.32;
+  }
+  .flow[data-state="armed"] .flow-line-draw {
+    stroke-dashoffset: 1;
+  }
+  .flow[data-state="play"] .flow-node-inner {
+    animation: flow-node 260ms ease-out both;
+    animation-delay: calc(var(--node-delay) * 1ms);
+  }
+  .flow[data-state="play"] .flow-line-draw {
+    animation: flow-draw 380ms linear both;
+    animation-delay: calc(var(--seg-delay) * 1ms);
+  }
+  .flow[data-state="play"] .flow-traveller-track {
+    animation: flow-travel-x 1760ms linear 200ms both;
+  }
+  .flow[data-state="play"] .flow-traveller {
+    animation: flow-traveller-fade 1760ms linear 200ms both;
+  }
+  @media (max-width: 1023.98px) {
+    .flow[data-state="play"] .flow-traveller-track {
+      animation-name: flow-travel-y;
+    }
+  }
+  @keyframes flow-node {
+    from {
+      opacity: 0.32;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes flow-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes flow-travel-x {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes flow-travel-y {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes flow-traveller-fade {
+    0% {
+      opacity: 1;
+    }
+    96% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* ───────────── FAQ (brief 5 #7) ───────────── */
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-icon {
+    transition: transform 240ms var(--ease);
+  }
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  .faq-body {
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+  .faq-item[open] .faq-body {
+    animation: faq-open 240ms var(--ease);
+  }
+  .faq-body > div {
+    overflow: hidden;
+    min-height: 0;
+  }
+  @keyframes faq-open {
+    from {
+      grid-template-rows: 0fr;
+    }
+    to {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  /* ───────────── Form (brief 6.9) ───────────── */
+  .field {
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 16px;
+    font-size: 16px;
+    line-height: 1.4;
+    background: var(--ink-900);
+    color: var(--paper-50);
+    border: 1px solid var(--ink-700);
+    transition: border-color 150ms ease-out;
+  }
+  .field:focus-visible,
+  .field:focus {
+    border-color: var(--signal);
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--error);
+  }
+  .chip {
+    position: relative;
+  }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+  .chip span {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 16px;
+    border: 1px solid var(--ink-700);
+    background: var(--ink-900);
+    transition:
+      background-color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+  .chip input:checked + span {
+    background: var(--paper-50);
+    color: var(--ink-950);
+    border-color: var(--paper-50);
+  }
+  .chip input:focus-visible + span {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+  .chip-group[aria-invalid="true"] .chip span {
+    border-color: var(--error);
+  }
+  @keyframes state-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .state-in {
+    animation: state-in 200ms ease-out both;
+  }
+
+  /* ───────────── Reduced motion: everything instant ───────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+    }
+    .hero-name .mask-inner,
+    .hero-portrait-img,
+    .reveal-title .mask-inner {
+      animation: none !important;
+      transform: none !important;
+    }
+    .hero-support,
+    .state-in {
+      animation: state-in 150ms ease-out both;
+    }
+    .site-nav,
+    .faq-icon,
+    .btn-arrow,
+    .link-arrow,
+    .project-arrow,
+    .project-shot img,
+    .underline-draw::after {
+      transition: none !important;
+    }
+    .btn:hover .btn-arrow,
+    .btn:focus-visible .btn-arrow,
+    .link:hover .link-arrow,
+    .project-row:hover .project-shot img,
+    .project-row:focus-within .project-shot img,
+    .project-row:hover .project-arrow,
+    .project-row:focus-within .project-arrow {
+      transform: none !important;
+    }
+    .btn:active {
+      transform: none;
+    }
+    .faq-item[open] .faq-body {
+      animation: none;
+    }
+  }
+}
