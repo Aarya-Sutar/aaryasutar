@@ -68,7 +68,7 @@ export function EnquiryFlow() {
       <div className="container-x">
         <div>
           <RevealTitle id="flow-title">{flow.title}</RevealTitle>
-          <p className="body-l mt-5 max-w-[60ch] text-muted">{flow.intro}</p>
+          <p className="body-l mt-6 max-w-[60ch] text-muted">{flow.intro}</p>
 
           <div
             ref={wrapRef}

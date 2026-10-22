@@ -110,6 +110,20 @@
     line-height: 1.6;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    font-kerning: normal;
+  }
+  /* Headings balance their lines; running text avoids one-word last lines ("them.", "works."). */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  summary,
+  figcaption {
+    text-wrap: pretty;
   }
   ::selection {
     background: var(--signal);
@@ -153,8 +167,10 @@
 }
 @utility display-l {
   font-family: var(--font-display);
-  /* height-aware too, so short wide screens (e.g. 125% Windows scaling) don't get oversized titles */
-  font-size: clamp(2.75rem, min(8vw, 15svh), 7rem);
+  /* height-aware too, so short wide screens (e.g. 125% Windows scaling) don't get oversized titles.
+     The 3.25rem floor keeps phone titles poster-like; the longest word (FORGEWORKS, 4.87em)
+     still fits a 320px screen. */
+  font-size: clamp(3.25rem, min(8vw, 15svh), 7rem);
   line-height: 0.88;
   text-wrap: balance;
   text-transform: uppercase;
@@ -269,7 +285,7 @@
   }
   .btn-arrow {
     display: inline-block;
-    transition: transform 180ms ease-out;
+    transition: transform 280ms var(--ease);
   }
   .btn[disabled] {
     cursor: progress;
@@ -310,7 +326,7 @@
   }
   .link-arrow {
     display: inline-block;
-    transition: transform 180ms ease-out;
+    transition: transform 280ms var(--ease);
   }
   @media (hover: hover) {
     .link:hover .link-arrow {
@@ -519,6 +535,10 @@
     display: block;
     width: 100%;
     height: auto;
+    /* the cutout's shoulders run off both image edges; feather them into the ink
+       instead of ending on a hard vertical cut */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
   }
 
   /* Spinning badge: mono text on a circle around a square signal core. */
@@ -676,6 +696,11 @@
   .mask > .mask-inner {
     display: block;
   }
+  /* one mask per title word; top-aligned so the clipped boxes don't shift the baseline */
+  .mask-word {
+    display: inline-block;
+    vertical-align: top;
+  }
 
   @keyframes rise {
     from {
@@ -725,7 +750,8 @@
     transform: translateY(105%);
   }
   .reveal-title[data-reveal="in"] .mask-inner {
-    animation: rise 600ms var(--ease) both;
+    animation: rise 750ms var(--ease) both;
+    animation-delay: calc(var(--w, 0) * 70ms);
   }
 
   /* ───────────── Project rows (brief 5 #4) ───────────── */
@@ -1072,6 +1098,49 @@
   }
 }
 
+/* Project screenshots wipe open from the top instead of fading, the image settles from a
+   slight zoom, then the phone frame rises onto it. The clip goes on the frames, never on the
+   observed element: a clip-path there makes it invisible to IntersectionObserver. */
+[data-reveal="clip"].is-armed {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal="clip"].is-armed > .frame {
+  clip-path: inset(0 0 100% 0);
+}
+[data-reveal="clip"].is-in > .frame:not(.frame-compact) {
+  animation: reveal-clip 1100ms var(--ease) both;
+}
+/* "backwards", not "both": once settled, the hover transitions own these transforms again */
+[data-reveal="clip"].is-in .frame-viewport img {
+  animation: shot-settle 1500ms var(--ease) backwards;
+}
+[data-reveal="clip"].is-in .frame-compact {
+  animation: reveal-up 900ms var(--ease) 450ms backwards;
+}
+@keyframes reveal-clip {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes shot-settle {
+  from {
+    transform: scale(1.08);
+  }
+}
+
+/* The phone frame sits on the desktop shot: a soft ink shadow makes the layering read,
+   and on hover it lifts away a little further. */
+.project-shot .frame-compact {
+  box-shadow: 0 18px 36px -14px rgb(18 16 14 / 0.45);
+  transition:
+    transform 500ms var(--ease),
+    box-shadow 500ms var(--ease);
+}
+
 /* Outlined Anton numerals that fill with the accent on hover */
 .numeral-stroke {
   color: transparent;
@@ -1182,6 +1251,13 @@
     transform: translateY(-4px);
     border-color: var(--signal);
   }
+  .project-row:hover .project-shot .frame-compact {
+    transform: translate(-4px, -10px);
+    box-shadow: 0 28px 44px -16px rgb(18 16 14 / 0.5);
+  }
+}
+.project-row:focus-within .project-shot .frame-compact {
+  transform: translate(-4px, -10px);
 }
 
 /* Orange marquee band between Services and Work */
@@ -1246,9 +1322,14 @@
   white-space: nowrap;
   color: transparent;
   -webkit-text-stroke: 1px var(--ink-700);
+}
+/* The fill runs through the name letter by letter, echoing the hero's letter rise.
+   The wordmark's colour switches at once; each letter inherits it on its own delay. */
+.footer-mark > span {
   transition:
-    color 600ms var(--ease),
-    -webkit-text-stroke-color 600ms var(--ease);
+    color 500ms var(--ease),
+    -webkit-text-stroke-color 500ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 35ms);
 }
 /* Hover is driven by the wrapper's real layout box. The text itself ignores the pointer:
    Anton's text box is ~1.5em tall, far taller than the 0.82 line height, and would otherwise
@@ -1272,9 +1353,13 @@
   .hover-row > *,
   .contact-row > *,
   .faq-item summary > span,
-  .flow-node {
+  .flow-node,
+  .footer-mark > span,
+  .project-shot .frame-compact {
     transition: none !important;
   }
+  .project-row:hover .project-shot .frame-compact,
+  .project-row:focus-within .project-shot .frame-compact,
   .service-card:hover .numeral-stroke,
   .hover-card:hover .numeral-stroke,
   .project-row:hover .numeral-stroke,

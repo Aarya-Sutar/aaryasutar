@@ -9,7 +9,7 @@ export function Faq() {
   return (
     <Section id="faq" tone="light" labelledBy="faq-title" className="border-t border-line">
       <div className="container-x grid gap-y-10 lg:grid-12">
-        <div className="lg:col-span-5">
+        <div className="lg:sticky lg:top-[calc(var(--nav-h)+2rem)] lg:col-span-5 lg:self-start">
           <RevealTitle id="faq-title">{faq.title}</RevealTitle>
         </div>
         <div className="border-t border-line lg:col-start-7 lg:col-end-13">

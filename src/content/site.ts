@@ -100,7 +100,7 @@ export const site = {
       {
         number: "03",
         title: "Website + Automation",
-        body: "The website's enquiry form feeds the automation directly: one setup, end to end.",
+        body: "The website’s enquiry form feeds the automation directly: one setup, end to end.",
         includes: ["Everything above, connected", "One person accountable for the whole flow"],
         cta: { label: "Discuss both", service: "both" },
       },
@@ -131,7 +131,7 @@ export const site = {
   flow: {
     title: "What happens after the form",
     intro:
-      "Most businesses lose enquiries in the gap between 'form submitted' and 'someone calls back'. This is the system I build to close that gap.",
+      "Most businesses lose enquiries in the gap between ‘form submitted’ and ‘someone calls back’. This is the system I build to close that gap.",
     steps: [
       { number: "01", title: "Enquiry", body: "Someone fills your website form or ad form" },
       {
@@ -152,7 +152,7 @@ export const site = {
   },
 
   process: {
-    title: "How we'll work",
+    title: "How we’ll work",
     steps: [
       {
         number: "01",
@@ -181,7 +181,7 @@ export const site = {
   about: {
     title: "About",
     bio: [
-      "I'm Aarya Sutar, a software developer and engineering student at NIT Trichy. Alongside my degree I've worked as a software engineer at Inqor AI, building subscription and payment systems, and as an AI/ML intern at Birlasoft, building document-search tools for enterprise software.",
+      "I’m Aarya Sutar, a software developer and engineering student at NIT Trichy. Alongside my degree I’ve worked as a software engineer at Inqor AI, building subscription and payment systems, and as an AI/ML intern at Birlasoft, building document-search tools for enterprise software.",
       "I bring that same engineering to business websites: pages that load fast, forms that actually work, and data that ends up where it should.",
     ],
     backgroundTitle: "Background",
@@ -199,7 +199,7 @@ export const site = {
       },
       { period: "2024 – 28", role: "B.Tech, NIT Tiruchirappalli", detail: "" },
     ],
-    otherTitle: "Other things I've built",
+    otherTitle: "Other things I’ve built",
     other: [
       {
         name: "FlowForge",
@@ -235,7 +235,7 @@ export const site = {
     items: [
       {
         q: "Do I need to have my content and photos ready?",
-        a: "It helps, but it isn't required. I'll tell you exactly what's needed, and I can work with what you have.",
+        a: "It helps, but it isn’t required. I’ll tell you exactly what’s needed, and I can work with what you have.",
       },
       {
         q: "Who owns the website?",
@@ -244,7 +244,7 @@ export const site = {
       },
       {
         q: "Can you improve my existing website instead of starting over?",
-        a: "Yes. I'll look at what you have and tell you honestly whether a fix or a rebuild makes more sense.",
+        a: "Yes. I’ll look at what you have and tell you honestly whether a fix or a rebuild makes more sense.",
       },
       {
         q: "Do you only work with businesses near you?",
@@ -252,12 +252,12 @@ export const site = {
       },
       {
         q: "What do automations need from my side?",
-        a: "Usually a Google account and access to the tools you already use. WhatsApp automation needs a verified WhatsApp Business setup, and I'll guide you through it.",
+        a: "Usually a Google account and access to the tools you already use. WhatsApp automation needs a verified WhatsApp Business setup, and I’ll guide you through it.",
       },
       {
         q: "What happens after launch?",
         // TODO(Aarya): describe any ongoing support you offer (brief U6).
-        a: "You'll know how to make simple updates yourself, and I'm a message away for anything bigger.",
+        a: "You’ll know how to make simple updates yourself, and I’m a message away for anything bigger.",
       },
     ],
   },
@@ -265,7 +265,7 @@ export const site = {
   contactSection: {
     title: "Start a project",
     // TODO(Aarya): add a response-time promise only if you can keep it (brief U5).
-    intro: "Tell me a little about your business and what you need. I'll reply with next steps.",
+    intro: "Tell me a little about your business and what you need. I’ll reply with next steps.",
     list: [
       { label: "WhatsApp", value: PHONE_DISPLAY, href: WHATSAPP_URL, external: true },
       { label: "Call", value: PHONE_DISPLAY, href: `tel:${PHONE_E164}`, external: false },
@@ -285,7 +285,7 @@ export const site = {
       business: { label: "Business name", optional: "Optional" },
       phone: {
         label: "Phone / WhatsApp",
-        hint: "I'll reply on WhatsApp if you prefer.",
+        hint: "I’ll reply on WhatsApp if you prefer.",
         errorRequired: "Enter a phone or WhatsApp number.",
         errorFormat: "Enter a 10-digit Indian number, or + and your country code.",
       },
@@ -311,11 +311,11 @@ export const site = {
     privacy: "Your details are only used to reply to your enquiry.",
     success: {
       heading: "Thanks, got it.",
-      body: "I'll get back to you soon. Want a faster reply?",
+      body: "I’ll get back to you soon. Want a faster reply?",
       whatsapp: "Message me on WhatsApp",
     },
     error: {
-      lead: "That didn't send. Please try again, or message me on",
+      lead: "That didn’t send. Please try again, or message me on",
       whatsapp: "WhatsApp",
       email: "email",
     },

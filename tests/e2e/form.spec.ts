@@ -80,7 +80,7 @@ test.describe("enquiry form @cross", () => {
     await fillValid(page);
     await page.getByRole("button", { name: "Send enquiry" }).click();
     const alert = page.locator("form").getByRole("alert");
-    await expect(alert).toContainText("That didn't send.");
+    await expect(alert).toContainText("That didn’t send.");
     await expect(alert.getByRole("link", { name: /WhatsApp/ })).toBeVisible();
     await expect(alert.getByRole("link", { name: /email/ })).toBeVisible();
     await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Priya Shah");
@@ -91,7 +91,7 @@ test.describe("enquiry form @cross", () => {
     await page.route(API, (route) => route.fulfill({ json: { success: false, message: "x" } }));
     await fillValid(page);
     await page.getByRole("button", { name: "Send enquiry" }).click();
-    await expect(page.locator("form").getByRole("alert")).toContainText("That didn't send.");
+    await expect(page.locator("form").getByRole("alert")).toContainText("That didn’t send.");
   });
 });
 
