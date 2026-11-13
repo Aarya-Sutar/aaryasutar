@@ -7,7 +7,7 @@ export const SITE_URL = "https://aaryasutar.com";
 // TODO(Aarya): confirm the phone and email below are the ones you want public (taken from the résumé, brief U8).
 const PHONE_E164 = "+918468948933";
 const PHONE_DISPLAY = "+91 84689 48933";
-const EMAIL = "sutaraarya5@gmail.com";
+const EMAIL = "hello@aaryasutar.me";
 const WHATSAPP_URL =
   "https://wa.me/918468948933?text=Hi%20Aarya%2C%20I%27d%20like%20to%20discuss%20a%20project.";
 const GITHUB_URL = "https://github.com/Aarya-Sutar";
