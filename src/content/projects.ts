@@ -41,8 +41,67 @@ export type Project = {
 
 const projects: Project[] = [
   {
-    slug: "forgeworks",
+    slug: "panshet-lakeview",
     order: 1,
+    published: true,
+    name: "Panshet Lakeview Resort",
+    kind: "Client website",
+    isConcept: false,
+    year: 2026,
+    summary:
+      "The live website for a lakeside resort near Pune, built so guests can check prices and ask about their dates on WhatsApp in one tap.",
+    highlights: [
+      "One-tap WhatsApp enquiry with dates, nights and guests already filled in",
+      "Every package, room and group rate on one fast, mobile-first page",
+      "Guest reviews written on the site, shown only after the owner approves them",
+    ],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Cloudflare Workers"],
+    liveUrl: "https://panshetlakeview.in",
+    media: {
+      desktop: {
+        src: "/images/work/panshet-lakeview-desktop.png",
+        alt: "Panshet Lakeview Resort home page on desktop: a hazy sunset over the lake behind the headline “One night by Panshet lake. Every meal sorted.”, with “Check dates on WhatsApp” and call buttons and an availability bar below.",
+        width: 2880,
+        height: 1800,
+      },
+      mobile: {
+        src: "/images/work/panshet-lakeview-mobile.png",
+        alt: "Panshet Lakeview Resort home page on a phone: the sunset over the lake, the headline, and stacked WhatsApp and call buttons.",
+        width: 780,
+        height: 1688,
+      },
+    },
+    caseStudy: {
+      brief:
+        "Panshet Lakeview is a small, owner-run resort on the Panshet dam backwaters, about an hour from Pune. It had no website: guests found it through Instagram reels and forwarded WhatsApp messages, then had to message just to learn the price. The site needed to answer “what does it cost and what’s included?” at a glance and turn that into a WhatsApp enquiry, on a phone with weak rural signal.",
+      built: [
+        "A one-page site: prices and packages, a typical day, the place, celebrations, reviews, FAQ and directions",
+        "A hero photo slideshow and short muted video reels of the lake, boating and cottages",
+        "An availability form that opens WhatsApp with the guest’s dates, nights and guest count already written",
+        "An email enquiry form as a second option, with WhatsApp and phone fallbacks if it fails",
+        "Guest reviews written on the site, held until the owner approves them from a private admin page",
+        "Google rating and review count, structured data for search, and a share image for WhatsApp previews",
+        "Deployed on Cloudflare at the client’s own domain, panshetlakeview.in",
+      ],
+      decisions: [
+        {
+          title: "WhatsApp is the booking system",
+          body: "The owner already takes bookings on WhatsApp, so the site feeds that instead of adding a booking engine. Every main button opens a prefilled message, and tap-to-call is always the second option.",
+        },
+        {
+          title: "Price first, no surprises",
+          body: "The per-person price and everything it covers are in the first screen. Every number on the page comes from one facts file with its source, checked against the owner’s price list.",
+        },
+        {
+          title: "Built for weak signal",
+          body: "Photos are served as AVIF and WebP at several sizes, the reels are short muted clips with posters, and videos stream with byte-range requests so they play on iPhones without downloading in full.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "forgeworks",
+    order: 2,
     published: true,
     name: "Forgeworks Athletic Club",
     kind: "Concept website",
@@ -107,8 +166,9 @@ const projects: Project[] = [
   },
   {
     slug: "windward-house",
-    order: 2,
-    published: true,
+    order: 4,
+    // Hidden: replaced by the real resort client site (Panshet Lakeview). Set to true to bring it back.
+    published: false,
     name: "Windward House",
     kind: "Concept website",
     isConcept: true,

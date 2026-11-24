@@ -4,7 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 const pages = [
   "/",
   "/work/forgeworks/",
-  "/work/windward-house/",
+  "/work/panshet-lakeview/",
   "/work/enquiry-autopilot/",
   "/nope/",
 ];

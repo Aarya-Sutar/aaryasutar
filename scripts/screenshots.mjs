@@ -1,10 +1,11 @@
 // Captures desktop + mobile screenshots of the live concept projects (Section 8.3).
-// Usage: npm run screenshots
+// Usage: npm run screenshots            (all projects)
+//        npm run screenshots -- <slug>  (one project)
 import { chromium } from "@playwright/test";
 
 const targets = [
   { slug: "forgeworks", url: "https://gym-demo-xi-olive.vercel.app" },
-  { slug: "windward-house", url: "https://hotel-website-demo-alpha.vercel.app" },
+  { slug: "panshet-lakeview", url: "https://panshetlakeview.in" },
 ];
 
 const viewports = {
@@ -13,7 +14,8 @@ const viewports = {
 };
 
 const browser = await chromium.launch();
-for (const { slug, url } of targets) {
+const only = process.argv[2];
+for (const { slug, url } of targets.filter((t) => !only || t.slug === only)) {
   for (const [kind, viewport] of Object.entries(viewports)) {
     const context = await browser.newContext({
       viewport,
@@ -23,7 +25,8 @@ for (const { slug, url } of targets) {
       reducedMotion: "no-preference",
     });
     const page = await context.newPage();
-    await page.goto(url, { waitUntil: "networkidle" });
+    // "load", not "networkidle": sites with looping video never go idle
+    await page.goto(url, { waitUntil: "load" });
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(2500);
     const file = `public/images/work/${slug}-${kind}.png`;

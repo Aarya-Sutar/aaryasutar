@@ -120,7 +120,7 @@ export const site = {
   work: {
     title: "Selected work",
     intro:
-      "Concept projects and prototypes, built end to end to show what I can make for a real business.",
+      "A live website for a client, alongside concept projects and prototypes built end to end to show what I can make for a business.",
     conceptDisclosure:
       "Concept project: a fictional business I designed and built. Names, photos and reviews inside it are invented.",
     caseStudyLink: "Read the case study",

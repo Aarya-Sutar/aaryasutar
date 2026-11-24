@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const slugs = ["forgeworks", "windward-house", "enquiry-autopilot"];
+const slugs = ["panshet-lakeview", "forgeworks", "enquiry-autopilot"];
 
 test("home renders every section in order @cross", async ({ page }) => {
   await page.goto("/");
@@ -24,9 +24,9 @@ test("home renders every section in order @cross", async ({ page }) => {
     "faq",
     "contact",
   ]);
-  // three published projects, each concept one carrying its disclosure
+  // three published projects; only the concept one carries the disclosure
   await expect(page.locator("#work article")).toHaveCount(3);
-  await expect(page.locator("#work article", { hasText: "fictional business" })).toHaveCount(2);
+  await expect(page.locator("#work article", { hasText: "fictional business" })).toHaveCount(1);
 });
 
 test("case studies link both ways @cross", async ({ page }) => {
